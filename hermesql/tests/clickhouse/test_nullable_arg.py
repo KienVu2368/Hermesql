@@ -1,10 +1,10 @@
 import unittest
 
 from parameterized import parameterized
-from pypika.clickhouse.type_conversion import ToFixedString
+from hermesql.clickhouse.type_conversion import ToFixedString
 
-from pypika import Field
-from pypika.clickhouse.nullable_arg import IfNull
+from hermesql import Field
+from hermesql.clickhouse.nullable_arg import IfNull
 
 
 class TestSearchString(unittest.TestCase):
@@ -12,8 +12,8 @@ class TestSearchString(unittest.TestCase):
         [
             (IfNull(Field("name"), Field("login")), "ifNull(name,login)",),
             (
-                IfNull(Field("builder"), ToFixedString("pypika", 100)),
-                "ifNull(builder,toFixedString('pypika',100))",
+                IfNull(Field("builder"), ToFixedString("hermesql", 100)),
+                "ifNull(builder,toFixedString('hermesql',100))",
             ),
         ]
     )

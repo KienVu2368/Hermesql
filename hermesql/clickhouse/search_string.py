@@ -1,7 +1,7 @@
 import abc
 
-from pypika.terms import Function
-from pypika.utils import format_alias_sql
+from hermesql.terms import Function
+from hermesql.utils import format_alias_sql
 
 
 class _AbstractSearchString(Function, metaclass=abc.ABCMeta):

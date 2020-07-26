@@ -1,11 +1,11 @@
 import abc
 
-from pypika.terms import (
+from hermesql.terms import (
     Field,
     Function,
     Term,
 )
-from pypika.utils import format_alias_sql
+from hermesql.utils import format_alias_sql
 
 
 class Array(Term):

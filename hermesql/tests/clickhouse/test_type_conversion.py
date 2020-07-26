@@ -2,10 +2,10 @@ import unittest
 
 from parameterized import parameterized
 
-from pypika import ClickHouseQuery
-from pypika import Field
-from pypika import Table
-from pypika.clickhouse.type_conversion import (
+from hermesql import ClickHouseQuery
+from hermesql import Field
+from hermesql import Table
+from hermesql.clickhouse.type_conversion import (
     ToString,
     ToInt8,
     ToInt16,

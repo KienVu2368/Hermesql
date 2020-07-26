@@ -2,15 +2,15 @@ import unittest
 
 from parameterized import parameterized
 
-from pypika import Field
-from pypika.clickhouse.array import (
+from hermesql import Field
+from hermesql.clickhouse.array import (
     Array,
     Empty,
     HasAny,
     Length,
     NotEmpty,
 )
-from pypika.clickhouse.type_conversion import (
+from hermesql.clickhouse.type_conversion import (
     ToFixedString,
     ToInt64,
 )

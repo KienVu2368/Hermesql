@@ -16,7 +16,7 @@ from typing import (
     Sequence,
 )
 
-from pypika.enums import (
+from hermesql.enums import (
     Arithmetic,
     Boolean,
     Dialects,
@@ -26,7 +26,7 @@ from pypika.enums import (
     Comparator,
     Order,
 )
-from pypika.utils import (
+from hermesql.utils import (
     CaseException,
     FunctionException,
     builder,
@@ -37,7 +37,7 @@ from pypika.utils import (
 )
 
 if TYPE_CHECKING:
-    from pypika.queries import Table, QueryBuilder, Selectable
+    from hermesql.queries import Table, QueryBuilder, Selectable
 
 
 __author__ = "Timothy Heys"
@@ -66,7 +66,7 @@ class Term(Node):
 
     @property
     def tables_(self) -> Set["Table"]:
-        from pypika import Table
+        from hermesql import Table
 
         return set(self.find_(Table))
 
@@ -83,7 +83,7 @@ class Term(Node):
         :param val:
             Any value.
         :param wrapper_cls:
-            A pypika class which wraps a constant value so it can be handled as a component of the query.
+            A hermesql class which wraps a constant value so it can be handled as a component of the query.
         :return:
             Raw string, number, or decimal values will be returned in a ValueWrapper.  Fields and other parts of the
             querybuilder will be returned as inputted.

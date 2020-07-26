@@ -2,8 +2,8 @@ import unittest
 
 from parameterized import parameterized
 
-from pypika import Field
-from pypika.clickhouse.search_string import (
+from hermesql import Field
+from hermesql.clickhouse.search_string import (
     Match,
     Like,
     NotLike,

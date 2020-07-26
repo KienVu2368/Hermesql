@@ -1,4 +1,4 @@
-from pypika.terms import Function
+from hermesql.terms import Function
 
 
 class IfNull(Function):

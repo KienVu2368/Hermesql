@@ -1,14 +1,14 @@
 from copy import copy
 from typing import Any, Union, Optional
 
-from pypika.enums import Dialects
-from pypika.queries import (
+from hermesql.enums import Dialects
+from hermesql.queries import (
     CreateQueryBuilder,
     Query,
     QueryBuilder,
     Table,
 )
-from pypika.terms import (
+from hermesql.terms import (
     ArithmeticExpression,
     EmptyCriterion,
     Field,
@@ -18,7 +18,7 @@ from pypika.terms import (
     ValueWrapper,
     Criterion,
 )
-from pypika.utils import (
+from hermesql.utils import (
     QueryException,
     builder,
 )

@@ -1,13 +1,13 @@
 """
 Package for SQL functions wrappers
 """
-from pypika.enums import SqlTypes
-from pypika.terms import (
+from hermesql.enums import SqlTypes
+from hermesql.terms import (
     AggregateFunction,
     Function,
     Star,
 )
-from pypika.utils import builder
+from hermesql.utils import builder
 
 __author__ = "Timothy Heys"
 __email__ = "theys@kayak.com"

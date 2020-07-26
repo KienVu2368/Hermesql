@@ -1,4 +1,4 @@
-from pypika import CustomFunction
+from hermesql import CustomFunction
 
 _add_subtract_args = ["name", "interval"]
 

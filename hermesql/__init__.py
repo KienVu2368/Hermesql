@@ -1,37 +1,37 @@
 """
-PyPika is divided into a couple of modules, primarily the ``queries`` and ``terms`` modules.
+hermesql is divided into a couple of modules, primarily the ``queries`` and ``terms`` modules.
 
-pypika.queries
+hermesql.queries
 --------------
 
-This is where the ``Query`` class can be found which is the core class in PyPika.  Also, other top level classes such
+This is where the ``Query`` class can be found which is the core class in hermesql.  Also, other top level classes such
 as ``Table`` can be found here.  ``Query`` is a container that holds all of the ``Term`` types together and also
 serializes the builder to a string.
 
-pypika.terms
+hermesql.terms
 ------------
 
 This module contains the classes which represent individual parts of queries that extend the ``Term`` base class.
 
-pypika.functions
+hermesql.functions
 ----------------
 
 Wrappers for common SQL functions are stored in this package.
 
-pypika.enums
+hermesql.enums
 ------------
 
 Enumerated values are kept in this package which are used as options for Queries and Terms.
 
 
-pypika.utils
+hermesql.utils
 ------------
 
 This contains all of the utility classes such as exceptions and decorators.
 
 """
 # noinspection PyUnresolvedReferences
-from pypika.dialects import (
+from hermesql.dialects import (
     ClickHouseQuery,
     Dialects,
     MSSQLQuery,
@@ -44,14 +44,14 @@ from pypika.dialects import (
 )
 
 # noinspection PyUnresolvedReferences
-from pypika.enums import (
+from hermesql.enums import (
     DatePart,
     JoinType,
     Order,
 )
 
 # noinspection PyUnresolvedReferences
-from pypika.queries import (
+from hermesql.queries import (
     AliasedQuery,
     Query,
     Schema,
@@ -63,7 +63,7 @@ from pypika.queries import (
 )
 
 # noinspection PyUnresolvedReferences
-from pypika.terms import (
+from hermesql.terms import (
     Array,
     Bracket,
     Case,
@@ -82,7 +82,7 @@ from pypika.terms import (
 )
 
 # noinspection PyUnresolvedReferences
-from pypika.utils import (
+from hermesql.utils import (
     CaseException,
     GroupingException,
     JoinException,

@@ -2,8 +2,8 @@ import unittest
 
 from parameterized import parameterized
 
-from pypika import Field
-from pypika.clickhouse.dates_and_times import (
+from hermesql import Field
+from hermesql.clickhouse.dates_and_times import (
     AddDays,
     AddHours,
     AddMinutes,

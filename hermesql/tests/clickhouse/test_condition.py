@@ -2,11 +2,11 @@ import unittest
 
 from parameterized import parameterized
 
-from pypika.clickhouse.condition import MultiIf
-from pypika.clickhouse.type_conversion import ToFixedString
+from hermesql.clickhouse.condition import MultiIf
+from hermesql.clickhouse.type_conversion import ToFixedString
 
-from pypika import Field
-from pypika.clickhouse.condition import If
+from hermesql import Field
+from hermesql.clickhouse.condition import If
 
 
 class TestIfCondition(unittest.TestCase):

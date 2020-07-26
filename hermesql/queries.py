@@ -10,8 +10,8 @@ from typing import (
     Tuple as TypedTuple,
 )
 
-from pypika.enums import JoinType, SetOperation, Dialects
-from pypika.terms import (
+from hermesql.enums import JoinType, SetOperation, Dialects
+from hermesql.terms import (
     ArithmeticExpression,
     EmptyCriterion,
     Field,
@@ -25,7 +25,7 @@ from pypika.terms import (
     ValueWrapper,
     Criterion,
 )
-from pypika.utils import (
+from hermesql.utils import (
     JoinException,
     QueryException,
     RollupException,
@@ -289,7 +289,7 @@ _TableClass = Table
 
 class Query:
     """
-    Query is the primary class and entry point in pypika. It is used to build queries iteratively using the builder
+    Query is the primary class and entry point in hermesql. It is used to build queries iteratively using the builder
     design
     pattern.
 
@@ -566,7 +566,7 @@ class _SetOperation(Selectable, Term):
 
 class QueryBuilder(Selectable, Term):
     """
-    Query Builder is the main class in pypika which stores the state of a query and offers functions which allow the
+    Query Builder is the main class in hermesql which stores the state of a query and offers functions which allow the
     state to be branched immutably.
     """
 

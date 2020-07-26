@@ -1,8 +1,8 @@
-from pypika.terms import (
+from hermesql.terms import (
     Field,
     Function,
 )
-from pypika.utils import format_alias_sql
+from hermesql.utils import format_alias_sql
 
 
 class ToString(Function):

@@ -9,7 +9,7 @@ def readme():
 
 
 def version():
-    path = 'pypika/__init__.py'
+    path = 'hermesql/__init__.py'
     with open(path, 'r') as file:
         t = compile(file.read(), path, 'exec', ast.PyCF_ONLY_AST)
         for node in (n for n in t.body if isinstance(n, ast.Assign)):
@@ -33,7 +33,7 @@ def version():
 
 setup(
       # Application name:
-      name="PyPika",
+      name="hermesql",
 
       # Version number:
       version=version(),
@@ -46,7 +46,7 @@ setup(
       license='Apache License Version 2.0',
 
       # Packages
-      packages=["pypika", "pypika.clickhouse"],
+      packages=["hermesql", "hermesql.clickhouse"],
 
       # Include additional files into the package
       include_package_data=True,
@@ -54,7 +54,7 @@ setup(
       install_requires=[],
 
       # Details
-      url="https://github.com/kayak/pypika",
+      url="https://github.com/kayak/hermesql",
 
       description="A SQL query builder API for Python",
       long_description=readme(),
@@ -72,10 +72,10 @@ setup(
           'Operating System :: MacOS :: MacOS X',
           'Operating System :: Microsoft :: Windows',
       ],
-      keywords=('pypika python query builder querybuilder sql mysql postgres psql oracle vertica aggregated '
+      keywords=('hermesql python query builder querybuilder sql mysql postgres psql oracle vertica aggregated '
                 'relational database rdbms business analytics bi data science analysis pandas '
                 'orm object mapper'),
 
       # Dependent packages (distributions)
-      test_suite="pypika.tests",
+      test_suite="hermesql.tests",
 )
