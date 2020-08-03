@@ -10,11 +10,14 @@ from typing import (
     Tuple as TypedTuple,
 )
 
+from hermesql import model
+
 from hermesql.enums import JoinType, SetOperation, Dialects
 from hermesql.terms import (
     ArithmeticExpression,
     EmptyCriterion,
     Field,
+    Field_piece,
     Function,
     Index,
     Node,
@@ -40,6 +43,10 @@ __author__ = "Timothy Heys"
 __email__ = "theys@kayak.com"
 
 
+
+#    def field(self, name: str) -> Field:
+#        return Field(name, table=self)
+
 class Selectable(Node):
     def __init__(self, alias: str) -> None:
         self.alias = alias
@@ -48,20 +55,17 @@ class Selectable(Node):
     def as_(self, alias: str) -> "Selectable":
         self.alias = alias
 
-    def field(self, name: str) -> Field:
-        return Field(name, table=self)
-
     @property
     def star(self) -> Star:
         return Star(self)
 
-    @ignore_copy
-    def __getattr__(self, name: str) -> Field:
-        return self.field(name)
+    @ignore_copy 
+    def __getattr__(self, name: str) -> Field_piece:
+        return self._field[name].get_sql()
 
     @ignore_copy
     def __getitem__(self, name: str) -> Field:
-        return self.field(name)
+        return self.__getattr__(name)
 
     def get_table_name(self) -> str:
         return self.alias
@@ -138,14 +142,20 @@ class Table(Selectable):
             return Schema(schema)
         return None
 
-    def __init__(self, name: str, schema: Optional[Union[Schema, str]] = None, alias: Optional[str] = None, query_cls: Optional[Type["Query"]] = None) -> None:
+    def __init__(self, table_name: str, alias: str, field: dict, criteria: dict, schema: Optional[Union[Schema, str]] = None,  query_cls: Optional[Type["Query"]] = None) -> None:
         super().__init__(alias)
-        self._table_name = name
+        self._table_name = table_name
+        self._field = field
+        self._criteria = criteria
         self._schema = self._init_schema(schema)
         self._query_cls = query_cls or Query
         if not issubclass(self._query_cls, Query):
             raise TypeError("Expected 'query_cls' to be subclass of Query")
 
+            
+    @classmethod
+    def from_model(cls, model, table_name): return cls(*model.load_table(table_name))
+            
     def get_table_name(self) -> str:
         return self.alias or self._table_name
 

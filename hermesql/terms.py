@@ -514,6 +514,45 @@ class Field(Criterion, JSON):
         return field_sql
 
 
+class Field_piece(Criterion, JSON):
+    def __init__(self, name: str, calculation: Optional[str] = None, type: Optional[str] = None, table_alias: Optional[str] = None) -> None:
+        self.alias = name
+        self.calculation = calculation
+        self.type = type
+        self.table_alias = table_alias
+
+    def nodes_(self) -> Iterator[NodeT]:
+        yield self
+        if self.table is not None:
+            yield from self.table.nodes_()
+
+    @builder
+    def replace_table(self, current_table: Optional["Table"], new_table: Optional["Table"]) -> "Field":
+        """
+        Replaces all occurrences of the specified table with the new table. Useful when reusing fields across queries.
+
+        :param current_table:
+            The table to be replaced.
+        :param new_table:
+            The table to replace with.
+        :return:
+            A copy of the field with the tables replaced.
+        """
+        self.table = new_table if self.table == current_table else self.table
+
+    def get_sql(self, with_alias = True, with_namespace = False, quote_char = None, **kwargs: Any) -> str:
+        field_sql = format_quotes(self.calculation, quote_char)
+
+        # Need to add namespace if the table has an alias
+        if with_namespace or self.table_alias:
+            field_sql = "{namespace}.{name}".format(
+                  namespace=format_quotes(self.table_alias, quote_char), name=field_sql,
+            )
+
+        field_alias = getattr(self, "alias", None)
+        if with_alias: return format_alias_sql(field_sql, field_alias, quote_char=quote_char, **kwargs)
+        return field_sql
+
 class Index(Term):
     def __init__(self, name: str, alias: Optional[str] = None) -> None:
         super().__init__(alias)
