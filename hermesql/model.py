@@ -27,7 +27,7 @@ class model:
     def load_field_from_dict(self, field_dict):
         fields = {}
         for field in field_dict.keys():
-            calculation = field_dict[field]['calculation'] if "calculation" in field_dict[field].keys() else field
+            calculation = field_dict[field]['calculation'] if "calculation" in field_dict[field].keys() else None
             type = field_dict[field]['type']
             fields[field] = self.load_field(field, calculation, type, self.table_alias)         
         return fields

@@ -142,7 +142,7 @@ class Table(Selectable):
             return Schema(schema)
         return None
 
-    def __init__(self, table_name: str, alias: str, field: dict, criteria: dict, schema: Optional[Union[Schema, str]] = None,  query_cls: Optional[Type["Query"]] = None) -> None:
+    def __init__(self, table_name: str, alias: str, field: dict, criteria: Optional[dict] = None, schema: Optional[Union[Schema, str]] = None,  query_cls: Optional[Type["Query"]] = None) -> None:
         super().__init__(alias)
         self._table_name = table_name
         self._field = field
