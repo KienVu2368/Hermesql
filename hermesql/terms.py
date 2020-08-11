@@ -541,19 +541,17 @@ class Field_piece(Criterion, JSON):
         """
         self.table = new_table if self.table == current_table else self.table
     
-    def get_sql(self, quote_char = None, **kwargs: Any) -> str:
+    def get_sql(self, with_alias = True, with_namespace = False, quote_char = None, **kwargs: Any) -> str:
+        table_alias = format_quotes(self.table_alias, quote_char) if with_namespace else None
+        calculation = format_quotes(self.calculation, quote_char) if self.calculation else None
+        field_alias = format_quotes(self.alias, quote_char)
+
         if self.calculation is not None:
-            field_sql = "{table_alias}.{calculation}".format(
-                    table_alias = format_quotes(self.table_alias, quote_char), 
-                    calculation = format_quotes(self.calculation, quote_char)
-                )
-            field_sql = format_alias_sql(field_sql, self.alias, quote_char=quote_char, **kwargs)
+            field_sql = ".".join(i for i in [table_alias, calculation] if i)
+            if with_alias: field_sql = format_alias_sql(field_sql, field_alias, quote_char=quote_char, **kwargs)
         else:
-            field_sql = "{table_alias}.{field_alias}".format(
-                  table_alias = format_quotes(self.table_alias, quote_char), 
-                  field_alias = format_quotes(self.alias, quote_char)
-            )
-        
+            field_sql = ".".join(i for i in [table_alias, field_alias] if i)      
+
         return field_sql
 
     @staticmethod
