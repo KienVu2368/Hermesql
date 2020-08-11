@@ -1,5 +1,8 @@
 import json
 import sqlparse
+import pandas as pd
+import pymysql
+from sqlalchemy import create_engine
 
 from copy import copy
 from functools import reduce
@@ -1783,3 +1786,18 @@ class model:
 
     def to_table(self, table_name):
         return Table(*self.load_table(table_name))
+
+class database_connector:
+    def __init__(self, connection_string):
+        self.connection = create_engine(connection_string)
+        
+    @classmethod
+    def from_mysql(cls, host, user, password, database):
+        return cls(f'mysql+pymysql://{user}:{password}@{host}:3306/{database}')
+    
+    def query(self, query, limit = False):
+        if limit: query = f'{query} limit {str(limit)}'
+        return pd.read_sql(query, con=self.connection)        
+    
+    def close(self):
+        self.connection.dispose()

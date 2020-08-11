@@ -61,7 +61,8 @@ from hermesql.queries import (
     Database,
     make_tables as Tables,
     make_columns as Columns,
-    model
+    model,
+    database_connector
 )
 
 # noinspection PyUnresolvedReferences
