@@ -1,5 +1,7 @@
-from copy import copy
 import json
+import sqlparse
+
+from copy import copy
 from functools import reduce
 from typing import (
     Optional,
@@ -1215,7 +1217,7 @@ class QueryBuilder(Selectable, Term):
             if self._limit is not None:
                 querystring += self._limit_sql()
 
-            return querystring
+            return sqlparse.format(querystring, reindent=True)
 
         if self._delete_from:
             querystring = self._delete_sql(**kwargs)
@@ -1236,7 +1238,7 @@ class QueryBuilder(Selectable, Term):
 
             if self._values:
                 querystring += self._values_sql(**kwargs)
-                return querystring
+                return sqlparse.format(querystring, reindent=True)
             else:
                 querystring += " " + self._select_sql(**kwargs)
 
@@ -1292,9 +1294,9 @@ class QueryBuilder(Selectable, Term):
             kwargs['alias_quote_char'] = (self.ALIAS_QUOTE_CHAR
                                           if self.QUERY_ALIAS_QUOTE_CHAR is None
                                           else self.QUERY_ALIAS_QUOTE_CHAR)
-            return format_alias_sql(querystring, self.alias, **kwargs)
+            return sqlparse.format(format_alias_sql(querystring, self.alias, **kwargs), reindent=True)
 
-        return querystring
+        return sqlparse.format(querystring, reindent=True)
 
     def _with_sql(self, **kwargs: Any) -> str:
         return "WITH " + ",".join(
