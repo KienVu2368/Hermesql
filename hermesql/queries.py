@@ -1,4 +1,5 @@
 from copy import copy
+import json
 from functools import reduce
 from typing import (
     Optional,
@@ -10,7 +11,7 @@ from typing import (
     Tuple as TypedTuple,
 )
 
-from hermesql import model
+# from hermesql import model
 
 from hermesql.enums import JoinType, SetOperation, Dialects
 from hermesql.terms import (
@@ -37,6 +38,7 @@ from hermesql.utils import (
     format_alias_sql,
     format_quotes,
     ignore_copy,
+    remove_vowels
 )
 
 __author__ = "Timothy Heys"
@@ -61,11 +63,12 @@ class Selectable(Node):
 
     @ignore_copy 
     def __getattr__(self, name: str) -> Field_piece:
-        return self._field[name].get_sql()
+        return self.field(name)
+
 
     @ignore_copy
     def __getitem__(self, name: str) -> Field:
-        return self.__getattr__(name)
+        return self.field(name)
 
     def get_table_name(self) -> str:
         return self.alias
@@ -151,6 +154,13 @@ class Table(Selectable):
         self._query_cls = query_cls or Query
         if not issubclass(self._query_cls, Query):
             raise TypeError("Expected 'query_cls' to be subclass of Query")
+
+    @ignore_copy 
+    def __getattr__(self, name: str) -> Field_piece:
+        try:
+            return self._field[name].get_sql()
+        except:
+            return Field_piece.get_sql_static(calculation = name, table_alias = self.alias )
 
             
     @classmethod
@@ -1729,3 +1739,45 @@ class CreateQueryBuilder:
 
     def __repr__(self) -> str:
         return self.__str__()
+
+
+class model:
+    def __init__(self, model: dict):
+        self.tables = model['table']
+        self.joins = model['join']
+        self.functions = model['function']        
+        
+    @classmethod
+    def from_json_file(cls, file_path):
+        f = open(file_path)
+        model_dict = json.load(f)
+        return cls(model_dict)
+        
+    @classmethod
+    def from_json(cls, json):
+        model_dict = json.load(json) 
+        return cls(model_dict)
+        
+    def load_table(self, table_name):
+        self.table_alias = self.tables[table_name]['alias'] if 'alias' in self.tables[table_name].keys() else remove_vowels(table_name)
+        fields = self.load_field_from_dict(self.tables[table_name]['field'])
+        creteria = self.tables[table_name]['criteria']        
+        return (table_name, self.table_alias, fields, creteria)
+    
+    def load_field_from_dict(self, field_dict):
+        fields = {}
+        for field in field_dict.keys():
+            calculation = field_dict[field]['calculation'] if "calculation" in field_dict[field].keys() else None
+            type = field_dict[field]['type']
+            fields[field] = self.load_field(field, calculation, type, self.table_alias)         
+        return fields
+    
+    def load_field(self, field_name, calculation, type, table_alias):
+        return Field_piece(field_name, calculation, type, table_alias)
+    
+    def load_join(self, join_name): return None
+    
+    def load_function(self, function_name): return None
+
+    def to_table(self, table_name):
+        return Table(*self.load_table(table_name))

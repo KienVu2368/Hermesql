@@ -120,3 +120,7 @@ def validate(*args: Any, exc: Optional[Exception] = None, type: Optional[Type] =
         for arg in args:
             if not isinstance(arg, type):
                 raise exc
+
+def remove_vowels(str):
+    vowels= ['a','e','i','o','u']
+    return ''.join(c for c in str if c not in vowels)

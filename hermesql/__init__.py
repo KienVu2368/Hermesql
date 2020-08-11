@@ -30,6 +30,7 @@ hermesql.utils
 This contains all of the utility classes such as exceptions and decorators.
 
 """
+
 # noinspection PyUnresolvedReferences
 from hermesql.dialects import (
     ClickHouseQuery,
@@ -60,6 +61,7 @@ from hermesql.queries import (
     Database,
     make_tables as Tables,
     make_columns as Columns,
+    model
 )
 
 # noinspection PyUnresolvedReferences
@@ -79,7 +81,7 @@ from hermesql.terms import (
     Parameter,
     Rollup,
     Tuple,
-    CustomFunction,
+    CustomFunction
 )
 
 # noinspection PyUnresolvedReferences
@@ -91,6 +93,7 @@ from hermesql.utils import (
     RollupException,
     SetOperationException,
     FunctionException,
+    remove_vowels
 )
 
 __author__ = "Timothy Heys"

@@ -1,5 +1,6 @@
 import inspect
 import re
+import pdb
 from datetime import date
 from enum import Enum
 from typing import (
@@ -539,18 +540,28 @@ class Field_piece(Criterion, JSON):
             A copy of the field with the tables replaced.
         """
         self.table = new_table if self.table == current_table else self.table
-
-    def get_sql(self, with_alias = True, with_namespace = False, quote_char = None, **kwargs: Any) -> str:
-        field_sql = format_quotes(self.calculation, quote_char)
-
-        # Need to add namespace if the table has an alias
-        if with_namespace or self.table_alias:
-            field_sql = "{namespace}.{name}".format(
-                  namespace=format_quotes(self.table_alias, quote_char), name=field_sql,
+    
+    def get_sql(self, quote_char = None, **kwargs: Any) -> str:
+        if self.calculation is not None:
+            field_sql = "{table_alias}.{calculation}".format(
+                    table_alias = format_quotes(self.table_alias, quote_char), 
+                    calculation = format_quotes(self.calculation, quote_char)
+                )
+            field_sql = format_alias_sql(field_sql, self.alias, quote_char=quote_char, **kwargs)
+        else:
+            field_sql = "{table_alias}.{field_alias}".format(
+                  table_alias = format_quotes(self.table_alias, quote_char), 
+                  field_alias = format_quotes(self.alias, quote_char)
             )
+        
+        return field_sql
 
-        field_alias = getattr(self, "alias", None)
-        if with_alias: return format_alias_sql(field_sql, field_alias, quote_char=quote_char, **kwargs)
+    @staticmethod
+    def get_sql_static(quote_char = None, field_name = None, table_alias = None, **kwargs: Any) -> str:
+        field_sql = "{table_alias}.{field_name}".format(
+                  table_alias = format_quotes(table_alias, quote_char), 
+                  field_name = format_quotes(field_name, quote_char)
+            )
         return field_sql
 
 class Index(Term):
