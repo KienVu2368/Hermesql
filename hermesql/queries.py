@@ -595,8 +595,8 @@ class QueryBuilder(Selectable, Term):
     state to be branched immutably.
     """
 
-    QUOTE_CHAR = '"'
-    SECONDARY_QUOTE_CHAR = "'"
+    QUOTE_CHAR = None # '"'
+    SECONDARY_QUOTE_CHAR = None # "'"
     ALIAS_QUOTE_CHAR = None
     QUERY_ALIAS_QUOTE_CHAR = None
 
