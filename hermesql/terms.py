@@ -469,53 +469,6 @@ class EmptyCriterion:
 
 
 class Field(Criterion, JSON):
-    def __init__(self, name: str, alias: Optional[str] = None, table: Optional[Union[str, "Selectable"]] = None) -> None:
-        super().__init__(alias)
-        self.name = name
-        self.table = table
-
-    def nodes_(self) -> Iterator[NodeT]:
-        yield self
-        if self.table is not None:
-            yield from self.table.nodes_()
-
-    @builder
-    def replace_table(self, current_table: Optional["Table"], new_table: Optional["Table"]) -> "Field":
-        """
-        Replaces all occurrences of the specified table with the new table. Useful when reusing fields across queries.
-
-        :param current_table:
-            The table to be replaced.
-        :param new_table:
-            The table to replace with.
-        :return:
-            A copy of the field with the tables replaced.
-        """
-        self.table = new_table if self.table == current_table else self.table
-
-    def get_sql(self, **kwargs: Any) -> str:
-        with_alias = kwargs.pop("with_alias", False)
-        with_namespace = kwargs.pop("with_namespace", False)
-        quote_char = kwargs.pop("quote_char", None)
-
-        field_sql = format_quotes(self.name, quote_char)
-
-        # Need to add namespace if the table has an alias
-        if self.table and (with_namespace or self.table.alias):
-            table_name = self.table.get_table_name()
-            field_sql = "{namespace}.{name}".format(
-                  namespace=format_quotes(table_name, quote_char), name=field_sql,
-            )
-
-        field_alias = getattr(self, "alias", None)
-        if with_alias:
-            return format_alias_sql(
-                  field_sql, field_alias, quote_char=quote_char, **kwargs
-            )
-        return field_sql
-
-
-class Field_piece(Criterion, JSON):
     def __init__(self, name: str, calculation: Optional[str] = None, type: Optional[str] = None, table_alias: Optional[str] = None) -> None:
         self.alias = name
         self.calculation = calculation
@@ -548,7 +501,7 @@ class Field_piece(Criterion, JSON):
 
         if self.calculation is not None:
             field_sql = ".".join(i for i in [table_alias, calculation] if i)
-            if with_alias: field_sql = format_alias_sql(field_sql, field_alias, quote_char=quote_char, **kwargs)
+            if with_alias: field_sql = format_alias_sql(field_sql, field_alsias, quote_char=quote_char, **kwargs)
         else:
             field_sql = ".".join(i for i in [table_alias, field_alias] if i)      
 
@@ -561,6 +514,7 @@ class Field_piece(Criterion, JSON):
                   field_name = format_quotes(field_name, quote_char)
             )
         return field_sql
+
 
 class Index(Term):
     def __init__(self, name: str, alias: Optional[str] = None) -> None:

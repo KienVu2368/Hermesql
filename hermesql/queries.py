@@ -23,7 +23,6 @@ from hermesql.terms import (
     ArithmeticExpression,
     EmptyCriterion,
     Field,
-    Field_piece,
     Function,
     Index,
     Node,
@@ -67,7 +66,7 @@ class Selectable(Node):
         return Star(self)
 
     @ignore_copy 
-    def __getattr__(self, name: str) -> Field_piece:
+    def __getattr__(self, name: str) -> Field:
         return self.field(name)
 
 
@@ -161,11 +160,11 @@ class Table(Selectable):
             raise TypeError("Expected 'query_cls' to be subclass of Query")
 
     @ignore_copy 
-    def __getattr__(self, name: str) -> Field_piece:
+    def __getattr__(self, name: str) -> Field:
         try:
             return self._field[name].get_sql()
         except:
-            return Field_piece.get_sql_static(calculation = name, table_alias = self.alias )
+            return Field.get_sql_static(calculation = name, table_alias = self.alias )
 
             
     @classmethod
@@ -1778,7 +1777,7 @@ class model:
         return fields
     
     def load_field(self, field_name, calculation, type, table_alias):
-        return Field_piece(field_name, calculation, type, table_alias)
+        return Field(field_name, calculation, type, table_alias)
     
     def load_join(self, join_name): return None
     

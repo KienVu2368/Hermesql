@@ -73,7 +73,6 @@ from hermesql.terms import (
     Criterion,
     EmptyCriterion,
     Field,
-    Field_piece,
     Index,
     Interval,
     JSON,
